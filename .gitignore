@@ -1,0 +1,17 @@
+# Maven build output
+target/
+
+# NetBeans private settings
+nbproject/private/
+**/nbproject/private/
+nb-configuration.xml
+
+# Compiled files
+*.class
+*.jar
+*.war
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
