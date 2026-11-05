@@ -1,6 +1,6 @@
-# School Management System – CA2 Algorithms & Constructs
+# School Management System
 
-Java console application for **Greenfield Secondary School** (CCT College Dublin – CA2).
+Java console application for a school.
 
 ## Features
 1. **SORT** – reads `Applicants_Form.txt`, sorts employees alphabetically with a recursive sorting algorithm and shows the first 20.
