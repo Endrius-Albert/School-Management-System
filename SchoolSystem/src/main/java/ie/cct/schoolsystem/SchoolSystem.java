@@ -4,6 +4,8 @@
 
 package ie.cct.schoolsystem;
 
+import ie.cct.schoolsystem.controller.MenuController;
+
 /**
  *
  * @author endri
@@ -11,6 +13,7 @@ package ie.cct.schoolsystem;
 public class SchoolSystem {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        MenuController controller = new MenuController();
+        controller.start();
     }
 }
