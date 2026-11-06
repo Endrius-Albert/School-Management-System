@@ -11,6 +11,39 @@ public class MenuController {
 
     public void start() {
         loadFile();
+
+        boolean running = true;
+        while (running) {
+            view.showMenu();
+            int choice = view.readInt("Enter your choice: ");
+            MenuOption option = MenuOption.fromNumber(choice);
+
+            if (option == null) {
+                view.showMessage("Invalid option. Please choose a number from the menu.");
+                continue;
+            }
+
+            view.showMessage(option.getLabel() + " selected");
+
+            switch (option) {
+                case SORT:
+                    sortEmployees();
+                    break;
+                case SEARCH:
+                    searchEmployee();
+                    break;
+                case ADD_RECORDS:
+                    addRecords();
+                    break;
+                case CREATE_BINARY_TREE:
+                    createBinaryTree();
+                    break;
+                case EXIT:
+                    running = false;
+                    view.showMessage("Goodbye!");
+                    break;
+            }
+        }
     }
 
     // Keeps asking for a filename until the file is read successfully
@@ -31,5 +64,17 @@ public class MenuController {
                 view.showMessage("File not found or could not be read. Please try again.");
             }
         }
+    }
+
+    private void sortEmployees() {
+    }
+
+    private void searchEmployee() {
+    }
+
+    private void addRecords() {
+    }
+
+    private void createBinaryTree() {
     }
 }
