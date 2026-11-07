@@ -1,6 +1,8 @@
 package ie.cct.schoolsystem.view;
 
 import ie.cct.schoolsystem.controller.MenuOption;
+import ie.cct.schoolsystem.model.Employee;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView {
@@ -33,5 +35,17 @@ public class ConsoleView {
 
     public void showMessage(String message) {
         System.out.println(message);
+    }
+
+    public void printStaffTable(List<Employee> list, int limit) {
+        int count = Math.min(limit, list.size());
+
+        System.out.println(String.format("%-4s %-22s | %-20s | %-18s",
+                "#", "Name", "Manager Type", "Department"));
+        System.out.println("-".repeat(71));
+
+        for (int i = 0; i < count; i++) {
+            System.out.println(String.format("%-4d %s", i + 1, list.get(i)));
+        }
     }
 }

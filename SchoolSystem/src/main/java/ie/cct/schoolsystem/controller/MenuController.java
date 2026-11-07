@@ -6,6 +6,8 @@ import java.io.IOException;
 
 public class MenuController {
 
+    private static final int NAMES_ON_SCREEN = 20;
+
     private ConsoleView view = new ConsoleView();
     private EmployeeRepository repository = new EmployeeRepository();
 
@@ -67,6 +69,10 @@ public class MenuController {
     }
 
     private void sortEmployees() {
+        repository.sortByName();
+        view.showMessage("Employees sorted alphabetically. Showing the first "
+                + NAMES_ON_SCREEN + ":");
+        view.printStaffTable(repository.getEmployees(), NAMES_ON_SCREEN);
     }
 
     private void searchEmployee() {

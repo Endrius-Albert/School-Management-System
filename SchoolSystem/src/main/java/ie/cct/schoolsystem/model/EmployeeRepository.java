@@ -65,6 +65,54 @@ public class EmployeeRepository {
                 department, position, managerType);
     }
 
+    public void sortByName() {
+        employees = mergeSort(employees);
+    }
+
+    private List<Employee> mergeSort(List<Employee> list) {
+        if (list.size() <= 1) {
+            return list;
+        }
+
+        int middle = list.size() / 2;
+        List<Employee> left = mergeSort(new ArrayList<>(list.subList(0, middle)));
+        List<Employee> right = mergeSort(new ArrayList<>(list.subList(middle, list.size())));
+
+        return joinSorted(left, right);
+    }
+
+    private List<Employee> joinSorted(List<Employee> left, List<Employee> right) {
+        List<Employee> result = new ArrayList<>();
+        int i = 0;
+        int j = 0;
+
+        while (i < left.size() && j < right.size()) {
+            if (nameOrder(left.get(i), right.get(j)) <= 0) {
+                result.add(left.get(i));
+                i++;
+            } else {
+                result.add(right.get(j));
+                j++;
+            }
+        }
+
+        while (i < left.size()) {
+            result.add(left.get(i));
+            i++;
+        }
+
+        while (j < right.size()) {
+            result.add(right.get(j));
+            j++;
+        }
+
+        return result;
+    }
+
+    private int nameOrder(Employee a, Employee b) {
+        return a.getFullName().compareToIgnoreCase(b.getFullName());
+    }
+
     public List<Employee> getEmployees() {
         return employees;
     }
