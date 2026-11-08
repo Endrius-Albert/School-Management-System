@@ -1,8 +1,10 @@
 package ie.cct.schoolsystem.controller;
 
+import ie.cct.schoolsystem.model.Employee;
 import ie.cct.schoolsystem.model.EmployeeRepository;
 import ie.cct.schoolsystem.view.ConsoleView;
 import java.io.IOException;
+import java.util.List;
 
 public class MenuController {
 
@@ -76,6 +78,22 @@ public class MenuController {
     }
 
     private void searchEmployee() {
+        String typed = view.readLine("Enter the name to search: ");
+        if (typed.isEmpty()) {
+            view.showMessage("No name typed.");
+            return;
+        }
+
+        List<Employee> found = repository.lookUp(typed);
+        if (found.isEmpty()) {
+            view.showMessage("No staff member found with the name \"" + typed + "\".");
+            return;
+        }
+
+        view.showMessage(found.size() + " match(es) found for \"" + typed + "\":");
+        for (Employee e : found) {
+            view.printProfile(e);
+        }
     }
 
     private void addRecords() {

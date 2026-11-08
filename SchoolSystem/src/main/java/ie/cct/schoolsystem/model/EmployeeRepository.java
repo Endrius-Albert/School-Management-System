@@ -10,6 +10,7 @@ public class EmployeeRepository {
 
     private List<Employee> employees = new ArrayList<>();
     private int invalidLines = 0;
+    private boolean inOrder = false;
 
     // Reads the file, skipping the header and blank lines.
     // Throws IOException if the file cannot be found or read.
@@ -67,6 +68,7 @@ public class EmployeeRepository {
 
     public void sortByName() {
         employees = mergeSort(employees);
+        inOrder = true;
     }
 
     private List<Employee> mergeSort(List<Employee> list) {
@@ -111,6 +113,64 @@ public class EmployeeRepository {
 
     private int nameOrder(Employee a, Employee b) {
         return a.getFullName().compareToIgnoreCase(b.getFullName());
+    }
+
+    // Returns every employee whose name starts with the typed text
+    public List<Employee> lookUp(String typed) {
+        List<Employee> found = new ArrayList<>();
+        if (typed == null || typed.trim().isEmpty()) {
+            return found;
+        }
+        if (!inOrder) {
+            sortByName();
+        }
+
+        String query = typed.trim();
+        int hit = binarySearch(query, 0, employees.size() - 1);
+        if (hit == -1) {
+            return found;
+        }
+
+        // Matches are next to each other in a sorted list
+        int first = hit;
+        while (first > 0 && matchOrder(employees.get(first - 1), query) == 0) {
+            first--;
+        }
+        int last = hit;
+        while (last < employees.size() - 1 && matchOrder(employees.get(last + 1), query) == 0) {
+            last++;
+        }
+
+        for (int k = first; k <= last; k++) {
+            found.add(employees.get(k));
+        }
+        return found;
+    }
+
+    private int binarySearch(String query, int low, int high) {
+        if (low > high) {
+            return -1;
+        }
+
+        int mid = (low + high) / 2;
+        int result = matchOrder(employees.get(mid), query);
+
+        if (result == 0) {
+            return mid;
+        } else if (result < 0) {
+            return binarySearch(query, mid + 1, high);
+        } else {
+            return binarySearch(query, low, mid - 1);
+        }
+    }
+
+    // Compares only the beginning of the name, with the same length as the query
+    private int matchOrder(Employee employee, String query) {
+        String name = employee.getFullName();
+        if (name.length() > query.length()) {
+            name = name.substring(0, query.length());
+        }
+        return name.compareToIgnoreCase(query);
     }
 
     public List<Employee> getEmployees() {

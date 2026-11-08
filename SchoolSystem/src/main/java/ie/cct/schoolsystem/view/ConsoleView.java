@@ -48,4 +48,14 @@ public class ConsoleView {
             System.out.println(String.format("%-4d %s", i + 1, list.get(i)));
         }
     }
+
+    public void printProfile(Employee e) {
+        System.out.println("-----------------------------------");
+        System.out.println("Name:         " + e.getFullName());
+        System.out.println("Manager Type: " + e.getManagerType());
+        System.out.println("Department:   " + e.getDepartment());
+        System.out.println("Position:     " + e.getPosition());
+        System.out.println("Email:        " + e.getEmail());
+        System.out.println("Salary:       EUR " + String.format("%.2f", e.getSalary()));
+    }
 }
