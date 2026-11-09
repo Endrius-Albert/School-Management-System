@@ -11,6 +11,7 @@ public class EmployeeRepository {
     private List<Employee> employees = new ArrayList<>();
     private int invalidLines = 0;
     private boolean inOrder = false;
+    private List<Employee> freshlyAdded = new ArrayList<>();
 
     // Reads the file, skipping the header and blank lines.
     // Throws IOException if the file cannot be found or read.
@@ -171,6 +172,17 @@ public class EmployeeRepository {
             name = name.substring(0, query.length());
         }
         return name.compareToIgnoreCase(query);
+    }
+
+    // Adds a new employee and sorts the list again so the search keeps working
+    public void addStaff(Employee employee) {
+        employees.add(employee);
+        freshlyAdded.add(employee);
+        sortByName();
+    }
+
+    public List<Employee> getFreshlyAdded() {
+        return freshlyAdded;
     }
 
     public List<Employee> getEmployees() {

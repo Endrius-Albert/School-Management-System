@@ -1,7 +1,9 @@
 package ie.cct.schoolsystem.controller;
 
+import ie.cct.schoolsystem.model.Department;
 import ie.cct.schoolsystem.model.Employee;
 import ie.cct.schoolsystem.model.EmployeeRepository;
+import ie.cct.schoolsystem.model.ManagerType;
 import ie.cct.schoolsystem.view.ConsoleView;
 import java.io.IOException;
 import java.util.List;
@@ -97,6 +99,72 @@ public class MenuController {
     }
 
     private void addRecords() {
+        boolean more = true;
+
+        while (more) {
+            String first = askName("First name: ");
+            String last = askName("Last name: ");
+
+            view.printOptions("Manager types:", ManagerType.values());
+            ManagerType role = askRole();
+
+            view.printOptions("Departments:", Department.values());
+            Department dept = askDepartment();
+
+            repository.addStaff(new Employee(first, last, dept, role));
+            view.showMessage("Record added. The list now has " + repository.size() + " employees.");
+
+            String answer = view.readLine("Add another record? (y/n): ");
+            more = answer.equalsIgnoreCase("y");
+        }
+
+        view.showMessage("Staff added this session:");
+        view.printStaffTable(repository.getFreshlyAdded(), repository.getFreshlyAdded().size());
+    }
+
+    private String askName(String prompt) {
+        while (true) {
+            String typed = view.readLine(prompt);
+            if (isProperName(typed)) {
+                return typed;
+            }
+            view.showMessage("Please use letters only.");
+        }
+    }
+
+    private boolean isProperName(String text) {
+        if (text.isEmpty()) {
+            return false;
+        }
+        for (int k = 0; k < text.length(); k++) {
+            char c = text.charAt(k);
+            if (!Character.isLetter(c) && c != ' ' && c != '-' && c != '\'') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private ManagerType askRole() {
+        while (true) {
+            String typed = view.readLine("Manager type: ");
+            ManagerType role = ManagerType.fromString(typed);
+            if (role != null) {
+                return role;
+            }
+            view.showMessage("\"" + typed + "\" is not a valid manager type. Please choose one from the list.");
+        }
+    }
+
+    private Department askDepartment() {
+        while (true) {
+            String typed = view.readLine("Department: ");
+            Department dept = Department.fromString(typed);
+            if (dept != null) {
+                return dept;
+            }
+            view.showMessage("\"" + typed + "\" is not a valid department. Please choose one from the list.");
+        }
     }
 
     private void createBinaryTree() {

@@ -58,4 +58,11 @@ public class ConsoleView {
         System.out.println("Email:        " + e.getEmail());
         System.out.println("Salary:       EUR " + String.format("%.2f", e.getSalary()));
     }
+
+    public void printOptions(String heading, Object[] options) {
+        System.out.println(heading);
+        for (Object option : options) {
+            System.out.println("  - " + option);
+        }
+    }
 }
