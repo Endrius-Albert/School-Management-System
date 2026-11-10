@@ -3,6 +3,7 @@ package ie.cct.schoolsystem.controller;
 import ie.cct.schoolsystem.model.Department;
 import ie.cct.schoolsystem.model.Employee;
 import ie.cct.schoolsystem.model.EmployeeRepository;
+import ie.cct.schoolsystem.model.EmployeeTree;
 import ie.cct.schoolsystem.model.ManagerType;
 import ie.cct.schoolsystem.view.ConsoleView;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.List;
 public class MenuController {
 
     private static final int NAMES_ON_SCREEN = 20;
+    private static final int TREE_MINIMUM = 20;
 
     private ConsoleView view = new ConsoleView();
     private EmployeeRepository repository = new EmployeeRepository();
@@ -168,5 +170,18 @@ public class MenuController {
     }
 
     private void createBinaryTree() {
+        List<Employee> staff = repository.getEmployees();
+        if (staff.size() < TREE_MINIMUM) {
+            view.showMessage("At least " + TREE_MINIMUM + " records are needed to build the tree.");
+            return;
+        }
+
+        EmployeeTree tree = new EmployeeTree();
+        tree.plantByRank(staff);
+
+        view.showMessage("Staff structure by hierarchy:");
+        view.printTreeLevels(tree.levels());
+        view.showMessage("Tree height: " + tree.height());
+        view.showMessage("Total nodes: " + tree.headcount());
     }
 }

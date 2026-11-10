@@ -2,6 +2,7 @@ package ie.cct.schoolsystem.view;
 
 import ie.cct.schoolsystem.controller.MenuOption;
 import ie.cct.schoolsystem.model.Employee;
+import ie.cct.schoolsystem.model.TreeNode;
 import java.util.List;
 import java.util.Scanner;
 
@@ -64,5 +65,16 @@ public class ConsoleView {
         for (Object option : options) {
             System.out.println("  - " + option);
         }
+    }
+
+    public void printTreeLevels(List<List<TreeNode>> levels) {
+        for (int i = 0; i < levels.size(); i++) {
+            System.out.println();
+            System.out.println("Level " + (i + 1) + ":");
+            for (TreeNode node : levels.get(i)) {
+                System.out.println("  " + node);
+            }
+        }
+        System.out.println();
     }
 }
