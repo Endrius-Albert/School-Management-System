@@ -107,6 +107,12 @@ public class MenuController {
             String first = askName("First name: ");
             String last = askName("Last name: ");
 
+            if (repository.isOnStaff(first + " " + last)) {
+                view.showMessage(first + " " + last + " is already on the staff list.");
+                more = askAnother();
+                continue;
+            }
+
             view.printOptions("Manager types:", ManagerType.values());
             ManagerType role = askRole();
 
@@ -116,12 +122,20 @@ public class MenuController {
             repository.addStaff(new Employee(first, last, dept, role));
             view.showMessage("Record added. The list now has " + repository.size() + " employees.");
 
-            String answer = view.readLine("Add another record? (y/n): ");
-            more = answer.equalsIgnoreCase("y");
+            more = askAnother();
         }
 
+        if (repository.getFreshlyAdded().isEmpty()) {
+            view.showMessage("No new staff added.");
+            return;
+        }
         view.showMessage("Staff added this session:");
         view.printStaffTable(repository.getFreshlyAdded(), repository.getFreshlyAdded().size());
+    }
+
+    private boolean askAnother() {
+        String answer = view.readLine("Add another record? (y/n): ");
+        return answer.toLowerCase().startsWith("y");
     }
 
     private String askName(String prompt) {
@@ -135,26 +149,29 @@ public class MenuController {
     }
 
     private boolean isProperName(String text) {
-        if (text.isEmpty()) {
-            return false;
-        }
+        boolean hasLetter = false;
         for (int k = 0; k < text.length(); k++) {
             char c = text.charAt(k);
-            if (!Character.isLetter(c) && c != ' ' && c != '-' && c != '\'') {
+            if (Character.isLetter(c)) {
+                hasLetter = true;
+            } else if (c != ' ' && c != '-' && c != '\'') {
                 return false;
             }
         }
-        return true;
+        return hasLetter;
     }
 
     private ManagerType askRole() {
         while (true) {
             String typed = view.readLine("Manager type: ");
             ManagerType role = ManagerType.fromString(typed);
-            if (role != null) {
+            if (role == null) {
+                view.showMessage("\"" + typed + "\" is not a valid manager type. Please choose one from the list.");
+            } else if (role == ManagerType.PRINCIPAL && repository.roleTaken(role)) {
+                view.showMessage("The school already has a Principal. Please choose another manager type.");
+            } else {
                 return role;
             }
-            view.showMessage("\"" + typed + "\" is not a valid manager type. Please choose one from the list.");
         }
     }
 

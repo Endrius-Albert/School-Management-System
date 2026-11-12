@@ -185,6 +185,25 @@ public class EmployeeRepository {
         return freshlyAdded;
     }
 
+    public boolean roleTaken(ManagerType role) {
+        for (Employee e : employees) {
+            if (e.getManagerType() == role) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Uses the binary search, then checks for an exact match of the full name
+    public boolean isOnStaff(String fullName) {
+        for (Employee e : lookUp(fullName)) {
+            if (e.getFullName().equalsIgnoreCase(fullName.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<Employee> getEmployees() {
         return employees;
     }

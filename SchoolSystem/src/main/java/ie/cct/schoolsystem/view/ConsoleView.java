@@ -55,9 +55,20 @@ public class ConsoleView {
         System.out.println("Name:         " + e.getFullName());
         System.out.println("Manager Type: " + e.getManagerType());
         System.out.println("Department:   " + e.getDepartment());
-        System.out.println("Position:     " + e.getPosition());
-        System.out.println("Email:        " + e.getEmail());
-        System.out.println("Salary:       EUR " + String.format("%.2f", e.getSalary()));
+        System.out.println("Position:     " + orDash(e.getPosition()));
+        System.out.println("Email:        " + orDash(e.getEmail()));
+        if (e.getSalary() > 0) {
+            System.out.println("Salary:       EUR " + String.format("%.2f", e.getSalary()));
+        } else {
+            System.out.println("Salary:       -");
+        }
+    }
+
+    private String orDash(String text) {
+        if (text == null || text.isEmpty()) {
+            return "-";
+        }
+        return text;
     }
 
     public void printOptions(String heading, Object[] options) {
